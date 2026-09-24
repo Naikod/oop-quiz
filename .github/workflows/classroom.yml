@@ -1,0 +1,151 @@
+name: Autograding Tests
+
+on:
+  push:
+    branches-ignore: [classroom]
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: MenuItem Constructor Test
+        id: test-menuitem-constructor
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: MenuItem Constructor Test
+          command: mvn -q test -Dtest=MenuItemConstructorTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 5
+
+      - name: MenuItem Getter Test
+        id: test-menuitem-getter
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: MenuItem Getter Test
+          command: mvn -q test -Dtest=MenuItemGetterTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 5
+
+      - name: MenuItem Encapsulation Test
+        id: test-menuitem-encapsulation
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: MenuItem Encapsulation Test
+          command: mvn -q test -Dtest=MenuItemEncapsulationTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: Customer Test
+        id: test-customer
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Customer Test
+          command: mvn -q test -Dtest=CustomerTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: Menu Aggregation Test
+        id: test-menu-aggregation
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Menu Aggregation Test
+          command: mvn -q test -Dtest=MenuAggregationTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: OrderItem Class Structure Test
+        id: test-orderitem-class
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: OrderItem Class Structure Test
+          command: mvn -q test -Dtest=OrderItemClassTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: OrderItem Subtotal Test
+        id: test-orderitem-subtotal
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: OrderItem Subtotal Test
+          command: mvn -q test -Dtest=OrderItemSubtotalTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 5
+
+      - name: Order Class Structure Test
+        id: test-order-class
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Order Class Structure Test
+          command: mvn -q test -Dtest=OrderClassTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: Order Add Item Test
+        id: test-order-additem
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Order Add Item Test
+          command: mvn -q test -Dtest=OrderAddItemTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: Order Total Test
+        id: test-order-total
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Order Total Test
+          command: mvn -q test -Dtest=OrderTotalTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: Order Discount Test
+        id: test-order-discount
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Order Discount Test
+          command: mvn -q test -Dtest=OrderDiscountTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 5
+
+      - name: Cashier Test
+        id: test-cashier
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Cashier Test
+          command: mvn -q test -Dtest=CashierTest -DfailIfNoTests=true
+          timeout: 10
+          max-score: 10
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST-MENUITEM-CONSTRUCTOR_RESULTS: "${{ steps.test-menuitem-constructor.outputs.result }}"
+          TEST-MENUITEM-GETTER_RESULTS: "${{ steps.test-menuitem-getter.outputs.result }}"
+          TEST-MENUITEM-ENCAPSULATION_RESULTS: "${{ steps.test-menuitem-encapsulation.outputs.result }}"
+          TEST-CUSTOMER_RESULTS: "${{ steps.test-customer.outputs.result }}"
+          TEST-MENU-AGGREGATION_RESULTS: "${{ steps.test-menu-aggregation.outputs.result }}"
+          TEST-ORDERITEM-CLASS_RESULTS: "${{ steps.test-orderitem-class.outputs.result }}"
+          TEST-ORDERITEM-SUBTOTAL_RESULTS: "${{ steps.test-orderitem-subtotal.outputs.result }}"
+          TEST-ORDER-CLASS_RESULTS: "${{ steps.test-order-class.outputs.result }}"
+          TEST-ORDER-ADDITEM_RESULTS: "${{ steps.test-order-additem.outputs.result }}"
+          TEST-ORDER-TOTAL_RESULTS: "${{ steps.test-order-total.outputs.result }}"
+          TEST-ORDER-DISCOUNT_RESULTS: "${{ steps.test-order-discount.outputs.result }}"
+          TEST-CASHIER_RESULTS: "${{ steps.test-cashier.outputs.result }}"
+        with:
+          runners: test-menuitem-constructor,test-menuitem-getter,test-menuitem-encapsulation,test-customer,test-menu-aggregation,test-orderitem-class,test-orderitem-subtotal,test-order-class,test-order-additem,test-order-total,test-order-discount,test-cashier

@@ -1,0 +1,67 @@
+@startuml class-diagram
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam class {
+  BackgroundColor White
+  ArrowColor Black
+  BorderColor Black
+}
+
+class MenuItem {
+  - name : String
+  - price : double
+  + MenuItem(name : String, price : double)
+  + getName() : String
+  + getPrice() : double
+  + setPrice(price : double) : void
+}
+
+class Customer {
+  - customerId : String
+  - name : String
+  + Customer(customerId : String, name : String)
+  + getCustomerId() : String
+  + getName() : String
+  + setName(name : String) : void
+}
+
+class Menu {
+  - items : MenuItem[]
+  - itemCount : int
+  + Menu()
+  + addMenuItem(item : MenuItem) : void
+  + findItem(name : String) : MenuItem
+  + getItemCount() : int
+}
+
+class OrderItem <<create this class>> {
+  - menuItem : MenuItem
+  - quantity : int
+  + OrderItem(menuItem : MenuItem, quantity : int)
+  + getMenuItem() : MenuItem
+  + getQuantity() : int
+  + getSubtotal() : double
+}
+
+class Order <<create this class>> {
+  - customer : Customer
+  - items : OrderItem[]
+  - itemCount : int
+  + Order(customer : Customer)
+  + getCustomer() : Customer
+  + addItem(item : MenuItem, quantity : int) : void
+  + getItemCount() : int
+  + getTotal() : double
+  + getFinalTotal() : double
+}
+
+class Cashier <<create this class>> {
+  + calculateChange(order : Order, cash : double) : double
+}
+
+Menu o-- "0..10" MenuItem : aggregation
+OrderItem "1..*" --> "1" MenuItem : association
+Order --> "1" Customer : association
+Order *-- "0..10" OrderItem : composition\n(created inside addItem)
+Cashier ..> Order : dependency\n(parameter only)
+@enduml

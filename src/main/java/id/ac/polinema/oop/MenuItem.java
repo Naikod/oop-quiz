@@ -8,9 +8,8 @@ package id.ac.polinema.oop;
  * Do not change the class name, field names, method names, or signatures —
  * the autograder calls them exactly as defined here.
  *
- * Fields (declare them yourself, both private):
- * - name  : String  — item name, e.g. "Es Kopi Susu"
- * - price : double  — price in Rupiah, never negative
+ * Declare the fields yourself: see the class diagram in the README
+ * (all fields must be private).
  */
 public class MenuItem {
 

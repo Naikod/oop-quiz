@@ -7,9 +7,8 @@ package id.ac.polinema.oop;
  * {@code throw new UnsupportedOperationException(...)} lines).
  * Do not change the class name, field names, method names, or signatures.
  *
- * Fields (declare them yourself, both private):
- * - customerId : String — e.g. "C001"
- * - name       : String — customer's name, never null or blank
+ * Declare the fields yourself: see the class diagram in the README
+ * (all fields must be private).
  */
 public class Customer {
 

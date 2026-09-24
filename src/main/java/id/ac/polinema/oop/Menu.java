@@ -10,9 +10,8 @@ package id.ac.polinema.oop;
  * {@code throw new UnsupportedOperationException(...)} lines).
  * Use a plain array, NOT List/ArrayList.
  *
- * Fields (declare them yourself, both private):
- * - items     : MenuItem[] — fixed capacity 10
- * - itemCount : int        — how many items are currently stored
+ * Declare the fields yourself: see the class diagram in the README
+ * (all fields must be private).
  */
 public class Menu {
 

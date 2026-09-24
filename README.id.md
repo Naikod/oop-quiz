@@ -15,6 +15,8 @@ Kuis ini mencakup empat konsep OOP: **class**, **object**, **encapsulation**, da
 
 ## Diagram Kelas
 
+Diagram kelas adalah **spesifikasi utama** kalian: semua kelas, field, konstruktor, dan signature method yang dibutuhkan sudah didefinisikan di sana. Bacalah dengan teliti.
+
 ![Class Diagram](docs/class-diagram.png)
 
 Kelas yang bertanda **«create this class»** belum ada — kalian harus membuatnya sendiri.
@@ -28,107 +30,52 @@ Kelas yang bertanda **«create this class»** belum ada — kalian harus membuat
 | **Composition** | `Order ◆→ OrderItem` | `Order` **membuat sendiri** objek `OrderItem` di dalam `addItem(...)`; objek itu tidak bisa ada tanpa pesanannya. |
 | **Dependency** | `Cashier ⇢ Order` | `Cashier` hanya **memakai** `Order` sebagai parameter method; tidak pernah menyimpannya di field. |
 
-## Bagian 1 — Lengkapi Kelas Kerangka (Skeleton)
+## Memulai
 
-File-file ini sudah ada di `src/main/java/id/ac/polinema/oop/`. Ganti setiap `throw new UnsupportedOperationException(...)` dengan implementasi yang benar. **Gunakan array biasa — JANGAN gunakan `List`/`ArrayList`** (Collections adalah materi pertemuan berikutnya).
+Repositori ini adalah **template**:
 
-### `MenuItem`
+1. Klik tombol hijau **Use this template** (kanan atas) → **Create a new repository**, atur visibilitas ke **Private**, beri nama misalnya `oop-quiz-<nama-kalian>`.
+2. Clone repositori **milik kalian**:
+   ```bash
+   git clone git@github.com:<username-kalian>/oop-quiz-<nama-kalian>.git
+   ```
+3. Buka proyek di editor (lihat di bawah), implementasikan kelas-kelasnya, lalu commit dan push.
+4. Setiap push menjalankan autograder. Buka tab **Actions** di repositori kalian untuk melihat skor. Jika GitHub meminta mengaktifkan workflow saat pertama kali, klik **I understand my workflows, enable them**.
 
-| Field | Tipe | Visibilitas |
-|---|---|---|
-| name | String | private |
-| price | double | private |
+## Membuka Proyek
 
-| Anggota | Deskripsi |
-|---|---|
-| `MenuItem(String name, double price)` | Menyimpan kedua parameter ke dalam field. |
-| `getName()` / `getPrice()` | Mengembalikan nilai field. |
-| `setPrice(double price)` | Memperbarui harga. Harga **negatif** melempar `IllegalArgumentException` dan harga lama tidak berubah. |
+Ini proyek Maven standar — tanpa konfigurasi tambahan.
 
-### `Customer`
+**NetBeans**
+1. **File → Open Project…**
+2. Pilih folder `oop-quiz-...` hasil clone (NetBeans otomatis mengenalinya sebagai proyek Maven) → **Open Project**.
+3. Klik kanan proyek → **Test** untuk menjalankan semua tes, atau jalankan satu file tes dari node `Test Packages`.
 
-| Field | Tipe | Visibilitas |
-|---|---|---|
-| customerId | String | private |
-| name | String | private |
-
-| Anggota | Deskripsi |
-|---|---|
-| `Customer(String customerId, String name)` | Menyimpan kedua parameter ke dalam field. |
-| `getCustomerId()` / `getName()` | Mengembalikan nilai field. |
-| `setName(String name)` | Memperbarui nama. Nama **null atau kosong (blank)** melempar `IllegalArgumentException` dan nama lama tidak berubah. |
-
-### `Menu` *(aggregation terhadap MenuItem)*
-
-| Field | Tipe | Visibilitas |
-|---|---|---|
-| items | MenuItem[] (kapasitas **10**) | private |
-| itemCount | int | private |
-
-| Anggota | Deskripsi |
-|---|---|
-| `Menu()` | Menginisialisasi array (kapasitas 10) dan counter (0). |
-| `addMenuItem(MenuItem item)` | Menyimpan item pada indeks `itemCount`, lalu menaikkan counter. Jika menu sudah penuh (10 item), tidak melakukan apa-apa. |
-| `findItem(String name)` | Mengembalikan `MenuItem` dengan nama yang sama persis, atau `null` jika tidak ditemukan. |
-| `getItemCount()` | Mengembalikan jumlah item yang tersimpan. |
-
-## Bagian 2 — Buat Kelas Baru
-
-File-file ini **belum ada**. Buatlah di `src/main/java/id/ac/polinema/oop/` persis seperti spesifikasi pada diagram kelas.
-
-### `OrderItem` *(association ke MenuItem)*
-
-Satu baris pesanan: sebuah item menu beserta jumlahnya.
-
-| Field | Tipe | Visibilitas |
-|---|---|---|
-| menuItem | MenuItem | private |
-| quantity | int | private |
-
-| Anggota | Deskripsi |
-|---|---|
-| `OrderItem(MenuItem menuItem, int quantity)` | Menyimpan kedua parameter ke dalam field. |
-| `getMenuItem()` / `getQuantity()` | Mengembalikan nilai field. |
-| `getSubtotal()` | Mengembalikan `harga × jumlah` (tipe `double`). |
-
-### `Order` *(composition terhadap OrderItem, association ke Customer)*
-
-| Field | Tipe | Visibilitas |
-|---|---|---|
-| customer | Customer | private |
-| items | OrderItem[] (kapasitas **10**) | private |
-| itemCount | int | private |
-
-| Anggota | Deskripsi |
-|---|---|
-| `Order(Customer customer)` | Menyimpan customer, menginisialisasi array (kapasitas 10) dan counter (0). |
-| `getCustomer()` | Mengembalikan customer. |
-| `addItem(MenuItem item, int quantity)` | **Membuat objek `OrderItem` baru di dalam method ini** (inilah composition!), menyimpannya pada indeks `itemCount`, lalu menaikkan counter. Jika pesanan sudah penuh (10 baris), tidak melakukan apa-apa. |
-| `getItemCount()` | Mengembalikan jumlah baris pesanan yang tersimpan. |
-| `getTotal()` | Mengembalikan jumlah subtotal semua baris pesanan (`double`). |
-| `getFinalTotal()` | Mengembalikan jumlah yang harus dibayar: jika `getTotal() >= 100000`, terapkan **diskon 10%** (`total × 0.9`); selain itu kembalikan total apa adanya. |
-
-### `Cashier` *(dependency terhadap Order)*
-
-Tanpa field. `Order` hanya dipakai sebagai **parameter** — jangan pernah disimpan di field.
-
-| Anggota | Deskripsi |
-|---|---|
-| `calculateChange(Order order, double cash)` | Mengembalikan `cash - order.getFinalTotal()`. Jika uang tunai **kurang dari** total akhir, melempar `IllegalArgumentException`. |
-
-## Cara Kerja
-
-1. Terima assignment dan clone repositori kalian dari GitHub Classroom.
-2. Lengkapi kelas kerangka (Bagian 1) dan buat kelas baru (Bagian 2).
-3. Uji secara lokal:
+**Visual Studio Code**
+1. Pasang **Extension Pack for Java** (Microsoft) dari panel Extensions.
+2. **File → Open Folder…** lalu pilih folder hasil clone.
+3. Jalankan tes dari side bar **Testing** (ikon labu), atau lewat terminal:
    ```bash
    mvn test
    ```
-   Menjalankan satu grup tes saja, misalnya:
-   ```bash
-   mvn test -Dtest=MenuItemConstructorTest
-   ```
-4. Commit dan push. Setiap push otomatis memicu autograding; skor muncul di tab **Actions** repositori dan di dashboard GitHub Classroom.
+
+## Bagian 1 — Lengkapi Kelas Kerangka (Skeleton)
+
+`MenuItem`, `Customer`, dan `Menu` sudah ada di `src/main/java/id/ac/polinema/oop/`. Ganti setiap `throw new UnsupportedOperationException(...)` dengan implementasi yang benar. Struktur (field, konstruktor, signature) diambil dari diagram kelas; aturan perilakunya:
+
+- **`MenuItem`** — `setPrice` menolak harga **negatif**: lempar `IllegalArgumentException` dan pertahankan harga lama.
+- **`Customer`** — `setName` menolak nama **null atau kosong (blank)**: lempar `IllegalArgumentException` dan pertahankan nama lama.
+- **`Menu`** *(aggregation)* — array berkapasitas **10**. `addMenuItem` menyimpan item pada indeks `itemCount` lalu menaikkan counter; jika menu penuh, tidak melakukan apa-apa. `findItem` mencocokkan nama secara persis dan mengembalikan `null` jika tidak ditemukan.
+
+**Gunakan array biasa — JANGAN gunakan `List`/`ArrayList`** (Collections adalah materi pertemuan berikutnya).
+
+## Bagian 2 — Buat Kelas Baru
+
+`OrderItem`, `Order`, dan `Cashier` **belum ada**. Buatlah di `src/main/java/id/ac/polinema/oop/` persis seperti yang digambarkan pada diagram kelas. Aturan perilakunya:
+
+- **`OrderItem`** *(association)* — `getSubtotal()` mengembalikan harga item menu × jumlah.
+- **`Order`** *(composition, association)* — array berkapasitas **10**, seperti `Menu`. `addItem(MenuItem, int)` **membuat objek `OrderItem` di dalam method** (inilah composition!); jika pesanan penuh, tidak melakukan apa-apa. `getTotal()` menjumlahkan subtotal semua baris. `getFinalTotal()` menerapkan **diskon 10%** jika total **≥ 100000**, selain itu mengembalikan total apa adanya.
+- **`Cashier`** *(dependency)* — tanpa field; `Order` hanya parameter. `calculateChange(Order, double)` mengembalikan uang tunai dikurangi total akhir, dan melempar `IllegalArgumentException` jika uang tunai **kurang dari** total akhir.
 
 Tips: kerjakan sesuai urutan tabel penilaian di bawah — poinnya kecil dan bertahap, jadi setiap langkah yang selesai langsung menambah skor kalian.
 
@@ -158,7 +105,7 @@ public static void main(String[] args) {
 }
 ```
 
-Jalankan dengan:
+Jalankan dari NetBeans (**Run Project**), VS Code (**Run** di atas `main`), atau terminal:
 
 ```bash
 mvn -q compile exec:java
@@ -176,7 +123,12 @@ Change   : 2000.0
 
 ## Penilaian
 
-Total **100 poin**, terbagi ke 12 grup tes kecil (dijalankan lewat GitHub Actions):
+Total **100 poin**, terbagi ke 12 grup tes kecil (dijalankan lewat GitHub Actions pada setiap push). Uji dulu secara lokal:
+
+```bash
+mvn test                              # semuanya
+mvn test -Dtest=MenuItemConstructorTest   # satu grup saja
+```
 
 | # | Grup Tes | Konsep | Poin |
 |---|---|---|---|
@@ -197,6 +149,6 @@ Total **100 poin**, terbagi ke 12 grup tes kecil (dijalankan lewat GitHub Action
 ## Aturan
 
 - **Jangan mengubah** file apa pun di dalam `src/test/**` atau `.github/**`.
-- Jangan mengubah nama kelas, nama field, nama method, maupun signature method — autograder memakainya persis seperti spesifikasi.
+- Ikuti diagram kelas dengan tepat — nama kelas, nama field, nama method, dan signature dipakai autograder persis seperti yang digambar.
 - Semua field harus `private` (ini diperiksa oleh tes).
 - Gunakan array biasa saja — tanpa `List`, `ArrayList`, atau Collection lainnya.

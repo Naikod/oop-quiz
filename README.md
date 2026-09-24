@@ -15,6 +15,8 @@ This quiz covers four OOP concepts: **class**, **object**, **encapsulation**, an
 
 ## Class Diagram
 
+The class diagram is your **primary specification**: every class, field, constructor, and method signature you need is defined there. Read it carefully.
+
 ![Class Diagram](docs/class-diagram.png)
 
 Classes marked **«create this class»** do not exist yet — you must create them yourself.
@@ -28,107 +30,52 @@ Classes marked **«create this class»** do not exist yet — you must create th
 | **Composition** | `Order ◆→ OrderItem` | `Order` **creates its own** `OrderItem` objects inside `addItem(...)`; they cannot exist without the order. |
 | **Dependency** | `Cashier ⇢ Order` | `Cashier` only **uses** an `Order` as a method parameter; it never stores it in a field. |
 
-## Part 1 — Complete the Skeleton Classes
+## Getting Started
 
-These files already exist in `src/main/java/id/ac/polinema/oop/`. Replace every `throw new UnsupportedOperationException(...)` with a working implementation. **Use plain arrays — do NOT use `List`/`ArrayList`** (Collections are next meeting's topic).
+This repository is a **template**:
 
-### `MenuItem`
+1. Click the green **Use this template** button (top right) → **Create a new repository**, set the visibility to **Private**, and name it e.g. `oop-quiz-<your-name>`.
+2. Clone **your** new repository:
+   ```bash
+   git clone git@github.com:<your-username>/oop-quiz-<your-name>.git
+   ```
+3. Open the project in your editor (see below), implement the classes, then commit and push.
+4. Every push runs the autograder. Open the **Actions** tab in your repository to see your score. If GitHub asks you to enable workflows the first time, click **I understand my workflows, enable them**.
 
-| Field | Type | Visibility |
-|---|---|---|
-| name | String | private |
-| price | double | private |
+## Opening the Project
 
-| Member | Description |
-|---|---|
-| `MenuItem(String name, double price)` | Stores both parameters into the fields. |
-| `getName()` / `getPrice()` | Return the field values. |
-| `setPrice(double price)` | Updates the price. A **negative** price throws `IllegalArgumentException` and leaves the old price unchanged. |
+This is a standard Maven project — no extra configuration needed.
 
-### `Customer`
+**NetBeans**
+1. **File → Open Project…**
+2. Select the cloned `oop-quiz-...` folder (NetBeans recognizes it as a Maven project automatically) → **Open Project**.
+3. Right-click the project → **Test** to run all tests, or run a single test file from the `Test Packages` node.
 
-| Field | Type | Visibility |
-|---|---|---|
-| customerId | String | private |
-| name | String | private |
-
-| Member | Description |
-|---|---|
-| `Customer(String customerId, String name)` | Stores both parameters into the fields. |
-| `getCustomerId()` / `getName()` | Return the field values. |
-| `setName(String name)` | Updates the name. A **null or blank** name throws `IllegalArgumentException` and leaves the old name unchanged. |
-
-### `Menu` *(aggregation of MenuItem)*
-
-| Field | Type | Visibility |
-|---|---|---|
-| items | MenuItem[] (capacity **10**) | private |
-| itemCount | int | private |
-
-| Member | Description |
-|---|---|
-| `Menu()` | Initializes the array (capacity 10) and the counter (0). |
-| `addMenuItem(MenuItem item)` | Stores the item at index `itemCount`, then increments the counter. When the menu is already full (10 items), does nothing. |
-| `findItem(String name)` | Returns the `MenuItem` with the exact same name, or `null` when not found. |
-| `getItemCount()` | Returns how many items are stored. |
-
-## Part 2 — Create the New Classes
-
-These files do **not** exist. Create them in `src/main/java/id/ac/polinema/oop/` exactly as specified in the class diagram.
-
-### `OrderItem` *(association to MenuItem)*
-
-One line of an order: a menu item plus a quantity.
-
-| Field | Type | Visibility |
-|---|---|---|
-| menuItem | MenuItem | private |
-| quantity | int | private |
-
-| Member | Description |
-|---|---|
-| `OrderItem(MenuItem menuItem, int quantity)` | Stores both parameters into the fields. |
-| `getMenuItem()` / `getQuantity()` | Return the field values. |
-| `getSubtotal()` | Returns `price × quantity` (type `double`). |
-
-### `Order` *(composition of OrderItem, association to Customer)*
-
-| Field | Type | Visibility |
-|---|---|---|
-| customer | Customer | private |
-| items | OrderItem[] (capacity **10**) | private |
-| itemCount | int | private |
-
-| Member | Description |
-|---|---|
-| `Order(Customer customer)` | Stores the customer, initializes the array (capacity 10) and the counter (0). |
-| `getCustomer()` | Returns the customer. |
-| `addItem(MenuItem item, int quantity)` | **Creates a new `OrderItem` inside this method** (this is the composition!), stores it at index `itemCount`, then increments the counter. When the order is full (10 lines), does nothing. |
-| `getItemCount()` | Returns how many order lines are stored. |
-| `getTotal()` | Returns the sum of every order line's subtotal (`double`). |
-| `getFinalTotal()` | Returns the payable amount: when `getTotal() >= 100000`, apply a **10% discount** (`total × 0.9`); otherwise return the total unchanged. |
-
-### `Cashier` *(dependency on Order)*
-
-No fields. `Order` is only used as a **parameter** — never store it in a field.
-
-| Member | Description |
-|---|---|
-| `calculateChange(Order order, double cash)` | Returns `cash - order.getFinalTotal()`. When the cash is **less than** the final total, throws `IllegalArgumentException`. |
-
-## How It Works
-
-1. Accept the assignment and clone your repository from GitHub Classroom.
-2. Complete the skeleton classes (Part 1) and create the new classes (Part 2).
-3. Test locally:
+**Visual Studio Code**
+1. Install the **Extension Pack for Java** (Microsoft) from the Extensions view.
+2. **File → Open Folder…** and select the cloned folder.
+3. Run tests from the **Testing** (flask icon) side bar, or via the terminal:
    ```bash
    mvn test
    ```
-   Run a single test group, e.g.:
-   ```bash
-   mvn test -Dtest=MenuItemConstructorTest
-   ```
-4. Commit and push. Every push automatically triggers autograding; scores appear in the repository's **Actions** tab and on the GitHub Classroom dashboard.
+
+## Part 1 — Complete the Skeleton Classes
+
+`MenuItem`, `Customer`, and `Menu` already exist in `src/main/java/id/ac/polinema/oop/`. Replace every `throw new UnsupportedOperationException(...)` with a working implementation. The structure (fields, constructors, signatures) comes from the class diagram; the behavior rules are:
+
+- **`MenuItem`** — `setPrice` rejects a **negative** price: throw `IllegalArgumentException` and keep the old price.
+- **`Customer`** — `setName` rejects a **null or blank** name: throw `IllegalArgumentException` and keep the old name.
+- **`Menu`** *(aggregation)* — the array has capacity **10**. `addMenuItem` stores the item at index `itemCount` and increments the counter; when the menu is full it does nothing. `findItem` matches the exact name and returns `null` when not found.
+
+**Use plain arrays — do NOT use `List`/`ArrayList`** (Collections are next meeting's topic).
+
+## Part 2 — Create the New Classes
+
+`OrderItem`, `Order`, and `Cashier` do **not** exist. Create them in `src/main/java/id/ac/polinema/oop/` exactly as drawn in the class diagram. Behavior rules:
+
+- **`OrderItem`** *(association)* — `getSubtotal()` returns the menu item's price × quantity.
+- **`Order`** *(composition, association)* — the array has capacity **10**, like `Menu`. `addItem(MenuItem, int)` **creates the `OrderItem` inside the method** (this is the composition!); when the order is full it does nothing. `getTotal()` sums every line's subtotal. `getFinalTotal()` applies a **10% discount** when the total is **≥ 100000**, otherwise returns the total unchanged.
+- **`Cashier`** *(dependency)* — no fields; `Order` is only a parameter. `calculateChange(Order, double)` returns the cash minus the final total, and throws `IllegalArgumentException` when the cash is **less than** the final total.
 
 Tip: work in the grading-table order below — the points are small and incremental, so every step you finish is immediately reflected in your score.
 
@@ -158,7 +105,7 @@ public static void main(String[] args) {
 }
 ```
 
-Run it:
+Run it from NetBeans (**Run Project**), VS Code (**Run** above `main`), or the terminal:
 
 ```bash
 mvn -q compile exec:java
@@ -176,7 +123,12 @@ Change   : 2000.0
 
 ## Grading
 
-Total **100 points**, split across 12 small test groups (run via GitHub Actions):
+Total **100 points**, split across 12 small test groups (run via GitHub Actions on every push). Run them locally first:
+
+```bash
+mvn test                              # everything
+mvn test -Dtest=MenuItemConstructorTest   # a single group
+```
 
 | # | Test Group | Concept | Points |
 |---|---|---|---|
@@ -197,6 +149,6 @@ Total **100 points**, split across 12 small test groups (run via GitHub Actions)
 ## Rules
 
 - **Do not modify** any files under `src/test/**` or `.github/**`.
-- Do not change class names, field names, method names, or method signatures — the autograder uses them exactly as specified.
+- Follow the class diagram exactly — class names, field names, method names, and signatures are used by the autograder as drawn.
 - All fields must be `private` (this is checked by the tests).
 - Use plain arrays only — no `List`, `ArrayList`, or any other Collection.

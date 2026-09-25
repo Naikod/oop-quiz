@@ -19,8 +19,13 @@ public class Menu {
      * Creates an empty menu: initialize the array with capacity 10
      * and the counter with 0.
      */
+
+    private MenuItem[] items;
+    private int itemCount;
+
     public Menu() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.itemCount = 0;
+        this.items = new MenuItem[10];
     }
 
     /**
@@ -30,7 +35,10 @@ public class Menu {
      * @param item the menu item to add
      */
     public void addMenuItem(MenuItem item) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if(itemCount < 10){
+            this.items[itemCount] = new MenuItem(item.getName(), item.getPrice());
+            this.itemCount++;
+        }
     }
 
     /**
@@ -40,10 +48,15 @@ public class Menu {
      * @return the matching MenuItem, or {@code null} when not found
      */
     public MenuItem findItem(String name) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        for(int i = 0; i < this.itemCount;i++){
+            if(this.items[i].getName().equalsIgnoreCase(name)){
+                return this.items[i];
+            }
+        } 
+        return null;
     }
 
     public int getItemCount() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return this.itemCount;
     }
 }

@@ -63,8 +63,8 @@ This is a standard Maven project — no extra configuration needed.
 
 `MenuItem`, `Customer`, and `Menu` already exist in `src/main/java/id/ac/polinema/oop/`. Replace every `throw new UnsupportedOperationException(...)` with a working implementation. The structure (fields, constructors, signatures) comes from the class diagram; the behavior rules are:
 
-- **`MenuItem`** — `setPrice` rejects a **negative** price: throw `IllegalArgumentException` and keep the old price.
-- **`Customer`** — `setName` rejects a **null or blank** name: throw `IllegalArgumentException` and keep the old name.
+- **`MenuItem`** — `setPrice` **ignores** a **negative** price and keeps the old price.
+- **`Customer`** — `setName` **ignores** a **null or blank** name and keeps the old name.
 - **`Menu`** *(aggregation)* — the array has capacity **10**. `addMenuItem` stores the item at index `itemCount` and increments the counter; when the menu is full it does nothing. `findItem` matches the exact name and returns `null` when not found.
 
 **Use plain arrays — do NOT use `List`/`ArrayList`** (Collections are next meeting's topic).
@@ -75,7 +75,7 @@ This is a standard Maven project — no extra configuration needed.
 
 - **`OrderItem`** *(association)* — `getSubtotal()` returns the menu item's price × quantity.
 - **`Order`** *(composition, association)* — the array has capacity **10**, like `Menu`. `addItem(MenuItem, int)` **creates the `OrderItem` inside the method** (this is the composition!); when the order is full it does nothing. `getTotal()` sums every line's subtotal. `getFinalTotal()` applies a **10% discount** when the total is **≥ 100000**, otherwise returns the total unchanged.
-- **`Cashier`** *(dependency)* — no fields; `Order` is only a parameter. `calculateChange(Order, double)` returns the cash minus the final total, and throws `IllegalArgumentException` when the cash is **less than** the final total.
+- **`Cashier`** *(dependency)* — no fields; `Order` is only a parameter. `calculateChange(Order, double)` returns the cash minus the final total.
 
 Tip: work in the grading-table order below — the points are small and incremental, so every step you finish is immediately reflected in your score.
 

@@ -7,7 +7,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CustomerTest {
@@ -38,16 +37,18 @@ class CustomerTest {
     }
 
     @Test
-    @DisplayName("setName rejects null with IllegalArgumentException")
-    void setNameRejectsNull() {
+    @DisplayName("setName ignores a null name and keeps the old name")
+    void setNameIgnoresNull() {
         Customer c = new Customer("C001", "Budi Santoso");
-        assertThrows(IllegalArgumentException.class, () -> c.setName(null));
+        c.setName(null);
+        assertEquals("Budi Santoso", c.getName());
     }
 
     @Test
-    @DisplayName("setName rejects a blank name with IllegalArgumentException")
-    void setNameRejectsBlank() {
+    @DisplayName("setName ignores a blank name and keeps the old name")
+    void setNameIgnoresBlank() {
         Customer c = new Customer("C001", "Budi Santoso");
-        assertThrows(IllegalArgumentException.class, () -> c.setName("   "));
+        c.setName("   ");
+        assertEquals("Budi Santoso", c.getName());
     }
 }

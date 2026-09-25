@@ -33,7 +33,7 @@ public class MenuItem {
 
     /**
      * Updates the price. A negative price is invalid:
-     * throw {@code IllegalArgumentException} and leave the field unchanged.
+     * ignore it and leave the field unchanged.
      *
      * @param price new price in Rupiah
      */

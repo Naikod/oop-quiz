@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -90,11 +89,10 @@ class CashierTest {
     }
 
     @Test
-    @DisplayName("Insufficient cash throws IllegalArgumentException")
-    void insufficientCashThrows() throws Throwable {
+    @DisplayName("Insufficient cash returns a negative change")
+    void insufficientCashReturnsNegative() throws Throwable {
         Object cashier = newCashier();
         Object order = newOrderWithTotal48000();
-        assertThrows(IllegalArgumentException.class,
-                () -> calculateChange(cashier, order, 40000));
+        assertEquals(-8000.0, calculateChange(cashier, order, 40000), 0.001);
     }
 }

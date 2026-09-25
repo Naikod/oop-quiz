@@ -32,7 +32,7 @@ public class Customer {
 
     /**
      * Updates the name. A null or blank name is invalid:
-     * throw {@code IllegalArgumentException} and leave the field unchanged.
+     * ignore it and leave the field unchanged.
      *
      * @param name new name
      */

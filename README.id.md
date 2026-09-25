@@ -63,8 +63,8 @@ Ini proyek Maven standar — tanpa konfigurasi tambahan.
 
 `MenuItem`, `Customer`, dan `Menu` sudah ada di `src/main/java/id/ac/polinema/oop/`. Ganti setiap `throw new UnsupportedOperationException(...)` dengan implementasi yang benar. Struktur (field, konstruktor, signature) diambil dari diagram kelas; aturan perilakunya:
 
-- **`MenuItem`** — `setPrice` menolak harga **negatif**: lempar `IllegalArgumentException` dan pertahankan harga lama.
-- **`Customer`** — `setName` menolak nama **null atau kosong (blank)**: lempar `IllegalArgumentException` dan pertahankan nama lama.
+- **`MenuItem`** — `setPrice` **mengabaikan** harga **negatif** dan mempertahankan harga lama.
+- **`Customer`** — `setName` **mengabaikan** nama **null atau kosong (blank)** dan mempertahankan nama lama.
 - **`Menu`** *(aggregation)* — array berkapasitas **10**. `addMenuItem` menyimpan item pada indeks `itemCount` lalu menaikkan counter; jika menu penuh, tidak melakukan apa-apa. `findItem` mencocokkan nama secara persis dan mengembalikan `null` jika tidak ditemukan.
 
 **Gunakan array biasa — JANGAN gunakan `List`/`ArrayList`** (Collections adalah materi pertemuan berikutnya).
@@ -75,7 +75,7 @@ Ini proyek Maven standar — tanpa konfigurasi tambahan.
 
 - **`OrderItem`** *(association)* — `getSubtotal()` mengembalikan harga item menu × jumlah.
 - **`Order`** *(composition, association)* — array berkapasitas **10**, seperti `Menu`. `addItem(MenuItem, int)` **membuat objek `OrderItem` di dalam method** (inilah composition!); jika pesanan penuh, tidak melakukan apa-apa. `getTotal()` menjumlahkan subtotal semua baris. `getFinalTotal()` menerapkan **diskon 10%** jika total **≥ 100000**, selain itu mengembalikan total apa adanya.
-- **`Cashier`** *(dependency)* — tanpa field; `Order` hanya parameter. `calculateChange(Order, double)` mengembalikan uang tunai dikurangi total akhir, dan melempar `IllegalArgumentException` jika uang tunai **kurang dari** total akhir.
+- **`Cashier`** *(dependency)* — tanpa field; `Order` hanya parameter. `calculateChange(Order, double)` mengembalikan uang tunai dikurangi total akhir.
 
 Tips: kerjakan sesuai urutan tabel penilaian di bawah — poinnya kecil dan bertahap, jadi setiap langkah yang selesai langsung menambah skor kalian.
 

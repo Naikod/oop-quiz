@@ -7,7 +7,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MenuItemEncapsulationTest {
@@ -30,21 +29,10 @@ class MenuItemEncapsulationTest {
     }
 
     @Test
-    @DisplayName("setPrice rejects a negative price with IllegalArgumentException")
-    void setPriceRejectsNegative() {
+    @DisplayName("setPrice ignores a negative price and keeps the old price")
+    void setPriceIgnoresNegative() {
         MenuItem item = new MenuItem("Es Kopi Susu", 18000);
-        assertThrows(IllegalArgumentException.class, () -> item.setPrice(-1000));
-    }
-
-    @Test
-    @DisplayName("Rejected setPrice leaves the old price unchanged")
-    void rejectedSetPriceKeepsOldValue() {
-        MenuItem item = new MenuItem("Es Kopi Susu", 18000);
-        try {
-            item.setPrice(-1000);
-        } catch (IllegalArgumentException expected) {
-            // expected
-        }
+        item.setPrice(-1000);
         assertEquals(18000.0, item.getPrice(), 0.001);
     }
 }
